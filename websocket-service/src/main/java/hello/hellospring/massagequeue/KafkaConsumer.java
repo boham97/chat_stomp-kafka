@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hello.hellospring.controller.ChatController;
 import hello.hellospring.dto.ChatMessageDto;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.env.Environment;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -18,16 +17,15 @@ import java.time.LocalDateTime;
 @Slf4j
 @RequiredArgsConstructor
 public class KafkaConsumer {
-
-    private final Environment env;
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ChatController controller;
-    // 배송준비된 주문의 준비시간 status  변경후 저장
-    @KafkaListener(topics = "#{env.getProperty('local.server.port') + 'user'}")   //SPel
-    public void orderFinish(String jsonMessage) throws IOException {
+//    @KafkaListener(topics = "${application.name}")
+    @KafkaListener(topics = "ws-0")
+    public void receive(String jsonMessage) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         ChatMessageDto message = objectMapper.readValue(jsonMessage, ChatMessageDto.class);
-        controller.receiveUser(message.getChatRoomId(), message);
+        log.info("kafka receive: " + "pub" + "/" + "user" + "/" + message.getChatRoomId() + "/" + message.getUserId() + "/" + LocalDateTime.now().toString());
+        controller.sendRoom(message.getChatRoomId(), message);
     }
 
 

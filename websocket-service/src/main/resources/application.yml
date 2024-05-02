@@ -1,15 +1,10 @@
 server:
-  port: 0
+  port: 8080
   shutdown: graceful
 
 spring:
   application:
-    name: order-service
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    generate-ddl: true
+    name: websocket-service
 
   redis:
     host: localhost
@@ -17,6 +12,7 @@ spring:
   kafka:
     host: localhost
     port: 9092
+    group: websocket
 
 
 eureka:

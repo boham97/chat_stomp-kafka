@@ -18,14 +18,15 @@ import java.util.Map;
 public class KafkaConsumerConfig {
     @Value("${spring.kafka.host}")
     private String host;
-
     @Value("${spring.kafka.port}")
     private int port;
+    @Value("${spring.kafka.group}")
+    private String groupId;
     @Bean
     public ConsumerFactory<String, String> consumerFactory() {
         Map<String, Object> properties = new HashMap<>();
         properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, host + ":" + port);
-        properties.put(ConsumerConfig.GROUP_ID_CONFIG, "test");
+        properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 
