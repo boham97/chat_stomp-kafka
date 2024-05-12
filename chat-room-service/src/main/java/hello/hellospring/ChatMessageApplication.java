@@ -6,10 +6,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-public class ChatRoomApplication {
+public class ChatMessageApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ChatRoomApplication.class, args);
+		SpringApplication.run(ChatMessageApplication.class, args);
 	}
 
 }

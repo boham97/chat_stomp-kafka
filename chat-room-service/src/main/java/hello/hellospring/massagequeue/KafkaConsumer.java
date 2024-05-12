@@ -1,7 +1,7 @@
 package hello.hellospring.massagequeue;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hello.hellospring.controller.ChatController;
 import hello.hellospring.dto.ChatMessageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,13 +17,21 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class KafkaConsumer {
     private final KafkaTemplate<String, String> kafkaTemplate;
-    private final ChatController controller;
-    @KafkaListener(topics = "sub")
+
+    @KafkaListener(topics = "pub")
     public void receive(String jsonMessage) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         ChatMessageDto message = objectMapper.readValue(jsonMessage, ChatMessageDto.class);
-        log.info("kafka receive: " + "sub" + "/" + "user" + "/" + message.getChatRoomId() + "/" + message.getUserId() + "/" + LocalDateTime.now());
-        controller.sendRoom(message.getChatRoomId(), message);
+        message.setLocalDateTime(LocalDateTime.now());
+        log.info("kafka receive: " + "pub" + "/" + "user" + "/" + message.getChatRoomId() + "/" + message.getUserId() + "/" + LocalDateTime.now());
+
+        String jsonInString = "";
+        try {
+            jsonInString = objectMapper.writeValueAsString(message);
+        } catch (JsonProcessingException ex) {
+            ex.printStackTrace();
+        }
+        kafkaTemplate.send("sub", jsonInString);
     }
 
 

@@ -36,15 +36,4 @@ public class ChatController {
         log.info("sendRoom: " + roomId + "/" + message.getUserId() + "/" + LocalDateTime.now());
         messagingTemplate.convertAndSend("/sub/room/" + roomId, message);
     }
-
-    @MessageMapping("/user/{roomId}")
-    public void receiveUser(@DestinationVariable Long roomId, ChatMessageDto message) {
-        //카프카로 전송
-        log.info("receiveUser: " + message.getChatRoomId() + "/" + message.getUserId() + "/" + LocalDateTime.now());
-        kafkaProducer.send("pub", message);
-    }
-
-    public void sendUser(Long roomId, ChatMessageDto message){
-        messagingTemplate.convertAndSend("/sub/user/" +roomId, message);
-    }
 }
