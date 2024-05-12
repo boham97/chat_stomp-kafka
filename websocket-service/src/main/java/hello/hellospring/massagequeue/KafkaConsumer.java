@@ -25,6 +25,9 @@ public class KafkaConsumer {
         log.info("kafka receive: " + "sub" + "/" + "user" + "/" + message.getChatRoomId() + "/" + message.getUserId() + "/" + LocalDateTime.now());
         controller.sendRoom(message.getChatRoomId(), message);
     }
-
+    @KafkaListener(topics = "memory_request")
+    public void memoryRequest(String jsonMessage) throws IOException {
+        kafkaTemplate.send("memory_response", String.valueOf(Runtime.getRuntime().freeMemory()));
+    }
 
 }

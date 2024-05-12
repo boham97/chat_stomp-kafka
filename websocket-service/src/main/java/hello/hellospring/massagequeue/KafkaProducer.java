@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class KafkaProducer {
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public void send(String topic, ChatMessageDto message){
+    public void messageSend(String topic, ChatMessageDto message){
         ObjectMapper mapper = new ObjectMapper();
         String jsonInString = "";
         try {
@@ -26,6 +26,5 @@ public class KafkaProducer {
         }
         kafkaTemplate.send(topic, jsonInString);
         log.info("kafka send: " + topic + "/" + message.getChatRoomId() + "/" + message.getUserId() + "/" + LocalDateTime.now());
-
     }
 }
