@@ -1,6 +1,7 @@
 package hello.hellospring.massagequeue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hello.hellospring.controller.ChatController;
 import hello.hellospring.dto.ChatMessageDto;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class KafkaConsumer {
     @KafkaListener(topics = "sub")
     public void receive(String jsonMessage) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         ChatMessageDto message = objectMapper.readValue(jsonMessage, ChatMessageDto.class);
         log.info("kafka receive: " + "sub" + "/" + "user" + "/" + message.getChatRoomId() + "/" + message.getUserId() + "/" + LocalDateTime.now());
         controller.sendRoom(message.getChatRoomId(), message);

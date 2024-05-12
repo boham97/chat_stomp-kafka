@@ -2,6 +2,7 @@ package hello.hellospring.massagequeue;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hello.hellospring.dto.ChatMessageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ public class KafkaConsumer {
     @KafkaListener(topics = "pub")
     public void receive(String jsonMessage) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         ChatMessageDto message = objectMapper.readValue(jsonMessage, ChatMessageDto.class);
         message.setLocalDateTime(LocalDateTime.now());
         log.info("kafka receive: " + "pub" + "/" + "user" + "/" + message.getChatRoomId() + "/" + message.getUserId() + "/" + LocalDateTime.now());

@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MessageController {
     private final Environment env;
-    private final KafkaProducer kafkaProducer;
-    private final SimpMessageSendingOperations messagingTemplate;
     @GetMapping("/health_check")
     public String status() {
         return String.format("It's Working in Order Service on PORT %s",

@@ -1,7 +1,6 @@
 package hello.hellospring.dto;
 
 import lombok.Data;
-import lombok.Getter;
 
 import java.time.LocalDateTime;
 

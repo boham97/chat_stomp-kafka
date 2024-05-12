@@ -29,7 +29,7 @@ public class ChatController {
     public void receiveRoom(@DestinationVariable Long roomId, ChatMessageDto message) {
         //카프카로 전송
         log.info("receiveRoom: " + message.getChatRoomId() + "/" + message.getUserId() + "/" + LocalDateTime.now());
-        kafkaProducer.send("pub", message);
+        kafkaProducer.messageSend("pub", message);
     }
 
     public void sendRoom(Long roomId, ChatMessageDto message){
