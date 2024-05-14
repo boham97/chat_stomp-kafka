@@ -10,18 +10,19 @@ public class FilterConfig {
     @Bean
     public RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("websocket-service1", r -> r
+                .route("websocket-service-1", r -> r
                         .weight("websocket", 1)
                         .filters(f -> f.rewritePath("/websocket-service/(?<segment>.*)", "/${segment}"))
                         .uri("lb://websocket-service-1"))
-                .route("websocket-service2", r -> r
+                .route("websocket-service-2", r -> r
                         .weight("websocket", 1)
                         .filters(f -> f.rewritePath("/websocket-service/(?<segment>.*)", "/${segment}"))
                         .uri("lb://websocket-service-2"))
-                .route("websocket-service3", r -> r
+                .route("websocket-service-3", r -> r
                         .weight("websocket", 1)
                         .filters(f -> f.rewritePath("/websocket-service/(?<segment>.*)", "/${segment}"))
                         .uri("lb://websocket-service-3"))
                 .build();
     }
+
 }
