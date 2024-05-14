@@ -15,12 +15,12 @@ import java.time.LocalDateTime;
 @Service
 public class KafkaProducer {
     private final KafkaTemplate<String, String> kafkaTemplate;
+    private final ObjectMapper objectMapper;
 
     public void messageSend(String topic, ChatMessageDto message){
-        ObjectMapper mapper = new ObjectMapper();
         String jsonInString = "";
         try {
-            jsonInString = mapper.writeValueAsString(message);
+            jsonInString = objectMapper.writeValueAsString(message);
         } catch (JsonProcessingException ex) {
             ex.printStackTrace();
         }
